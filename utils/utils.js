@@ -23,7 +23,7 @@ function sendOTP(email, otp) {
     };
 
     console.log("Sending OTP...");
-
+    //transporter includes configuration needed to connect to your email service provider
     let transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -196,7 +196,7 @@ const panVerify = async (request, response) => {
             const body = Buffer.concat(chunks);
             console.log(body.toString());
             const parsedBody = JSON.parse(body);//Extracting json to js object
-            if(parsedBody.status=="success")
+            if(parsedBody.status=="success")//if the value of the key status == success then pan card verified
             {
                 response.json({status:1,message:"pan found"})
             }
@@ -250,7 +250,7 @@ const bankVerify=async(request,response)=>
       task_id: '123',
       group_id: '1234',
       data: {
-        bank_account_no: accno,
+        bank_account_no: accno,//acc number and ifsc from client side
         bank_ifsc_code: ifsc
       }
     }));
@@ -265,7 +265,7 @@ const options = {
 	method: 'GET',
 	hostname: 'indian-bank-account-verification.p.rapidapi.com',
 	port: null,
-	path: `/v3/tasks?request_id=${id}`,
+	path: `/v3/tasks?request_id=${id}`,//request id from the function bankverify
 	headers: {
 		'x-rapidapi-key': '86367067a4mshbbff21f23e078b7p1ceca9jsn7f02d77136ff',
 		'x-rapidapi-host': 'indian-bank-account-verification.p.rapidapi.com'
@@ -285,11 +285,11 @@ const req = https.request (options, function (res) {
 		const body = Buffer.concat(chunks);
 		console.log(body.toString());
         const parsedBody = JSON.parse(body);
-        const verified= parsedBody[0].result.status
+        const verified= parsedBody[0].result.status//the response contain an object result and inside it an object status is present
         console.log(verified)
-        if(verified=="id_found")
+        if(verified=="id_found")//if value of status is id found then bank details are verified
         {
-            response.json({status:1})
+            response.json({status:1})//if id found a status 1 is sent back to client
         }
         else
         {
@@ -310,7 +310,7 @@ const gstVerify = async (request, response) => {
         method: 'GET',
         hostname: 'gst-insights-api.p.rapidapi.com',
         port: null,
-        path: '/getGSTStatus/27AABCI6363G3ZH',
+        path: `/getGSTStatus/${gstno.trim()}`,//passing gstnumber from client side
         headers: {
             'x-rapidapi-key': '86367067a4mshbbff21f23e078b7p1ceca9jsn7f02d77136ff',
             'x-rapidapi-host': 'gst-insights-api.p.rapidapi.com'
@@ -328,7 +328,7 @@ const gstVerify = async (request, response) => {
             const body = Buffer.concat(chunks);
             console.log(body.toString());
             const parsedBody = JSON.parse(body);
-            response.json(parsedBody.data.isActive)
+            response.json(parsedBody.data.isActive)//Value of isactive is passed to client
         });
     });
     
@@ -344,7 +344,7 @@ const fetchAddress=async(request,response)=>
         method: 'GET',
         hostname: 'india-pincode-with-latitude-and-longitude.p.rapidapi.com',
         port: null,
-        path: `/api/v1/pincode/${pincode}`,
+        path: `/api/v1/pincode/${pincode}`,//passing pincode from client side
         headers: {
             'x-rapidapi-key': '86367067a4mshbbff21f23e078b7p1ceca9jsn7f02d77136ff',
             'x-rapidapi-host': 'india-pincode-with-latitude-and-longitude.p.rapidapi.com'
@@ -363,7 +363,7 @@ const fetchAddress=async(request,response)=>
             console.log(body.toString());
         const parsedBody = JSON.parse(body);
         console.log(parsedBody)
-        response.json(parsedBody)
+        response.json(parsedBody)//Entire response is given back to client
 	});
 });
 
