@@ -179,7 +179,7 @@ const panVerify = async (request, response) => {
         port: null,
         path: '/validation/api/v1/panverification',
         headers: {
-            'x-rapidapi-key': 'dafab22790msheeb9cc21701e62ep1d1c43jsnf12e54dfda82',
+            'x-rapidapi-key': '20ed44c9e7msha033b53c580a8d0p187eecjsn767d66c1ac53',
             'x-rapidapi-host': 'pan-information-verification-api.p.rapidapi.com',
             'Content-Type': 'application/json'
         }
