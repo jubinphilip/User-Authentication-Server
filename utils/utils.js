@@ -51,7 +51,7 @@ const sendOtp = async (req, res) => {
         const { name, email, phone, dob } = req.body;
         console.log(name, email, phone, dob);
 
-        // Send OTP via SMS using v2 API
+        // Send OTP via SMS  to mobile number
         const verification = await client.verify.v2.services(process.env.SERVICE_ID)
             .verifications.create({
                 to: `+91${phone}`,
@@ -67,15 +67,15 @@ const sendOtp = async (req, res) => {
         // Send OTP email
         await sendOTP(email, otp);
 
-        // Set cookie for storing the email and otp
+        // craete a cookie which store email and otp
         res.cookie('otpCache', JSON.stringify(otpCache), { maxAge: 30000, httpOnly: true });
 
-        // Send response after setting the cookie
+        // Response is sended back to user
         res.json({ message: 'OTP sent successfully', verification });
 
         console.log("OTP sent");
     } catch (error) {
-        // Handle errors (e.g., network issues, Twilio API errors)
+       
         console.error('Error sending OTP:', error);
         if (!res.headersSent) {
             res.status(500).json({ message: 'Failed to send OTP' });
@@ -107,7 +107,7 @@ const otpMobile = async (req, res) => {
              res.status(400).json({ status:0, message: 'OTP verification failed' });
          }
      } catch (error) {
-         // Handle errors (e.g., network issues, Twilio API errors)
+         
          console.error('Error verifying OTP:', error);
          res.status(500).json({
              message: 'Failed to verify OTP',
